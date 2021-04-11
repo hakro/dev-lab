@@ -14,4 +14,7 @@ RUN mkdir -p /root/.vim/backup /root/.vim/swap /root/.vim/undo && \
     cd YouCompleteMe && git submodule update --init --recursive && \
     python3 install.py --go-completer --ts-completer
 
+# Need to make Lightline look nice
+ENV TERM=xterm-256color
+
 WORKDIR /app

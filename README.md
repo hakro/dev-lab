@@ -7,3 +7,10 @@ To use it, switch to your project directory, and run
 ```console
 docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/app hakimr/dev-lab bash
 ```
+
+## Useful commands & Shortcuts
+
+- Open a terminal : `:term`
+- Swap Split positions : `ctrl+W R`
+- Move to new split : `ctrl+W W`
+- Toogle NERDTree : `:NERDTreeToggle`
