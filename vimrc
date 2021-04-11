@@ -1,7 +1,16 @@
-syntax on
 set encoding=utf-8
 set fileencoding=utf-8
 
+" Setup Theme : https://draculatheme.com/vim
+syntax on
+packadd! dracula
+colorscheme dracula
+
+let g:lightline = {
+      \ 'colorscheme': 'dracula',
+      \ }
+
+set cursorline
 set number
 set hlsearch "Highlight search
 set incsearch "Incremental search
@@ -12,10 +21,10 @@ set tabstop=4
 " when indenting with '>', use 4 spaces width
 set shiftwidth=4
 " On pressing tab, insert 4 spaces
-set expandtab
+" set expandtab
 set autoindent
 set smartindent
-set paste
+" set paste
 set noshowmode "The mode will be shown in the LightLine plugin
 set scrolloff=10 " Keep lines below and above the cursor
 set mouse=a
@@ -37,6 +46,14 @@ autocmd BufWinEnter * silent NERDTreeMirror
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
     \ quit | endif
+
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
 
 " Autocomplete when pressing dot (vim-go)
 "au filetype go inoremap <buffer> . .<C-x><C-o>
