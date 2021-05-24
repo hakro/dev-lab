@@ -1,5 +1,6 @@
 set encoding=utf-8
 set fileencoding=utf-8
+set shell=/bin/bash
 
 " Setup Theme : https://draculatheme.com/vim
 syntax on
@@ -31,6 +32,7 @@ set mouse=a
 set noswapfile
 set splitbelow " Open splits below the current window. Useful for :term
 set termwinsize=8x0
+set signcolumn=yes " Keep Gutter width fixed
 
 " Change backup and swp file locations
 set backupdir=~/.vim/backup//
@@ -61,13 +63,14 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
     \ quit | endif
 
 " Autoclose brackets, parenthesis ...
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
+" Not needed when using the plugin auto-pairs
+" inoremap " ""<left>
+" inoremap ' ''<left>
+" inoremap ( ()<left>
+" inoremap [ []<left>
+" inoremap { {}<left>
+" inoremap {<CR> {<CR>}<ESC>O
+" inoremap {;<CR> {<CR>};<ESC>O
 
 " Autocomplete when pressing dot (vim-go)
 "au filetype go inoremap <buffer> . .<C-x><C-o>

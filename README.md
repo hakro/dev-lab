@@ -16,3 +16,4 @@ docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/app hakimr/dev-lab
 - Move to the split above : `ctrl+W K`
 - Move to the split below : `ctrl+W J`
 - Toogle NERDTree : `:NERDTreeToggle`
+- Scroll in termainl : `ctrl+W Shift+N` Then use J&K to navigate, and i to go back
