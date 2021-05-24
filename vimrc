@@ -50,6 +50,9 @@ nnoremap gd :YcmCompleter GoToDefinition<CR>
 " let g:ycm_autoclose_preview_window_after_completion = 1
 " let g:ycm_autoclose_preview_window_after_insertion = 1
 
+" Run Go Format when saving a file
+autocmd BufWritePre *.go :YcmCompleter Format <afile>
+
 
 " NERDTree config
 " Start NERDTree and leave the cursor in it.
