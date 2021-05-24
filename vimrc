@@ -28,7 +28,7 @@ set smartindent
 " set paste
 set noshowmode "The mode will be shown in the LightLine plugin
 set scrolloff=10 " Keep lines below and above the cursor
-set mouse=a
+set mouse=r
 set noswapfile
 set splitbelow " Open splits below the current window. Useful for :term
 set termwinsize=8x0
