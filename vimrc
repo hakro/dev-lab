@@ -28,7 +28,10 @@ set smartindent
 " set paste
 set noshowmode "The mode will be shown in the LightLine plugin
 set scrolloff=10 " Keep lines below and above the cursor
-set mouse=r
+" Enables mouse (including for resizing of splits), but use shift for copying text with cursor
+set mouse=a
+" Disables mouse resize, but just select text without shift to copy
+" set mouse=r
 set noswapfile
 set splitbelow " Open splits below the current window. Useful for :term
 set termwinsize=8x0

@@ -5,17 +5,24 @@ This Docker image comes preconfigured with a Vim config to make Go & Typescript 
 To use it, switch to your project directory, and run 
 
 ```console
-docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/app hakimr/dev-lab bash
+docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/Projects hakimr/dev-lab bash
 ```
 
 ## Useful commands & Shortcuts
 
 - Open a terminal : `:term`
-- Swap Split positions : `ctrl+W R`
-- Move to new split : `ctrl+W W`
-- Move to the split above : `ctrl+W K`
-- Move to the split below : `ctrl+W J`
+- Scroll in terminal : `ctrl+w Shift+n` Then use J&K to navigate, and i to go back
+- Swap Split positions : `ctrl+w R`
+- Move to new split : `ctrl+w w`
+- Move to the split above : `ctrl+w k`
+- Move to the split below : `ctrl+w j`
 - Toogle NERDTree : `:NERDTreeToggle`
-- Scroll in termainl : `ctrl+W Shift+N` Then use J&K to navigate, and i to go back
+- Create or delete file from NERDTree : `m then a or d`
 - Comment line : `gcc`
 - Comment block in Visual Mode : `gc`
+- Go to definition : `gd` (opens doc in new buffer)
+- Go to back to the previous buffer : `ctrl+o`
+- Go to back to the next buffer : `ctrl+i`
+- Go to buffer number # : `:b#'
+- Show open Vim buffers : `:ls` or `:buffers`
+- Close buffer by number (number 3 here) : `:bd3`
