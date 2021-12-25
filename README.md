@@ -1,5 +1,7 @@
 # Development lab
 
+## Run the container
+
 This Docker image comes preconfigured with a Vim config to make Go & Typescript development easy.
 
 To use it, switch to your project directory, and run 
@@ -7,6 +9,12 @@ To use it, switch to your project directory, and run
 ```console
 docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/Projects hakimr/dev-lab bash
 ```
+
+## Go Hot reloading
+
+Air is included for Go hot reloading. To use it, you just need to run the command `air` inside a Go project directory
+
+Air Doc : https://github.com/cosmtrek/air
 
 ## Useful commands & Shortcuts
 
