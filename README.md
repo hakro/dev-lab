@@ -17,7 +17,10 @@ docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/Projects hakimr/de
 - Move to the split above : `ctrl+w k`
 - Move to the split below : `ctrl+w j`
 - Toogle NERDTree : `:NERDTreeToggle`
+- Open file in new tab : `t`
 - Create or delete file from NERDTree : `m then a or d`
+- Go to next tab : `gt`
+- Go to previous tab : `gT`
 - Comment line : `gcc`
 - Comment block in Visual Mode : `gc`
 - Go to definition : `gd` (opens doc in new buffer)
