@@ -2,19 +2,28 @@ set encoding=utf-8
 set fileencoding=utf-8
 set shell=/bin/bash
 
-" Setup Theme : https://draculatheme.com/vim
 syntax on
-packadd! dracula
-colorscheme dracula
-
-let g:lightline = {
-      \ 'colorscheme': 'dracula',
-      \ }
-
 set cursorline
 set number
 set hlsearch "Highlight search
 set incsearch "Incremental search
+
+" Uncomment for Purify Theme : https://github.com/kyoz/purify
+packadd! purify
+colorscheme purify
+let g:lightline = {
+      \ 'colorscheme': 'purify',
+      \ }
+" Customize line highlight with blue background instead of underline
+highlight CursorLine term=bold cterm=bold ctermfg=NONE ctermbg=19
+
+" Uncomment for Dracula Theme : https://draculatheme.com/vim
+" packadd! dracula
+" colorscheme dracula
+" let g:lightline = {
+"       \ 'colorscheme': 'dracula',
+"       \ }
+
 
 filetype plugin indent on
 " show existing tab with 4 spaces width

@@ -29,6 +29,7 @@ RUN sudo mkdir -p /home/$USERNAME/.vim/backup /home/$USERNAME/.vim/swap /home/$U
     cd YouCompleteMe && git submodule update --init --recursive && \
     python3 install.py --go-completer --ts-completer && \
     cd /home/$USERNAME/.vim/pack/themes/start && \
-    git clone --depth 1 https://github.com/dracula/vim.git dracula
+    git clone --depth 1 https://github.com/dracula/vim.git dracula && \
+    git clone --depth 1 https://github.com/kyoz/purify
 
 WORKDIR /Projects
