@@ -26,10 +26,12 @@ RUN sudo mkdir -p /home/$USERNAME/.vim/backup /home/$USERNAME/.vim/swap /home/$U
     git clone --depth 1 https://github.com/tpope/vim-fugitive.git && \
     git clone --depth 1 https://github.com/scrooloose/nerdtree.git && \
     git clone --depth 1 https://github.com/ycm-core/YouCompleteMe.git && \
-    cd YouCompleteMe && git submodule update --init --recursive && \
+    cd YouCompleteMe && git submodule update --depth 1 --init --recursive && \
     python3 install.py --go-completer --ts-completer && \
     cd /home/$USERNAME/.vim/pack/themes/start && \
     git clone --depth 1 https://github.com/dracula/vim.git dracula && \
-    git clone --depth 1 https://github.com/kyoz/purify
+    git clone --depth 1 https://github.com/kyoz/purify /tmp/purify && \
+    mv /tmp/purify/vim /home/$USERNAME/.vim/pack/themes/start/purify && \
+    rm -rf /tmp/purify
 
 WORKDIR /Projects
