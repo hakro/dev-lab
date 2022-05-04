@@ -10,6 +10,15 @@ To use it, switch to your project directory, and run
 docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/Projects hakimr/dev-lab bash
 ```
 
+If you need to run the container with a MariaDB and Adminer, you can use Docker Compose instead
+```console
+# Add -d to run in the background
+docker compose up
+# On another shell, get the DevLab Docker ID, and bash into it
+docker ps
+docker exec -it XXX bash
+```
+
 ## Go Hot reloading
 
 Air is included for Go hot reloading. To use it, you just need to run the command `air` inside a Go project directory
@@ -19,7 +28,7 @@ Air Doc : https://github.com/cosmtrek/air
 ## Useful commands & Shortcuts
 
 - Open a terminal : `:term`
-- Scroll in terminal : `ctrl+w Shift+n` Then use J&K to navigate, and i to go back
+- Scroll in terminal : `ctrl+w Shift+n` Then use `j&k` to navigate, and `i` to go back
 - Swap Split positions : `ctrl+w R`
 - Move to new split : `ctrl+w w`
 - Move to the split above : `ctrl+w k`

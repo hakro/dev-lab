@@ -1,4 +1,4 @@
-FROM golang:1.17-alpine
+FROM golang:1.18.1-alpine
 
 # Need to make Lightline look nice
 ENV TERM=xterm-256color
