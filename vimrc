@@ -65,6 +65,10 @@ nnoremap gd :YcmCompleter GoToDefinition<CR>
 " Run Go Format when saving a file
 autocmd BufWritePre *.go :YcmCompleter Format <afile>
 
+" Show function documentation in a hover popup
+" Default is 4000 milliseconds
+set updatetime=1500
+
 
 " NERDTree config
 " Start NERDTree and leave the cursor in it.
