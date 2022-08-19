@@ -1,3 +1,4 @@
+set nocompatible
 set encoding=utf-8
 set fileencoding=utf-8
 set shell=/bin/bash
@@ -5,14 +6,28 @@ set shell=/bin/bash
 syntax on
 set cursorline
 set number
+set relativenumber
 set hlsearch "Highlight search
 set incsearch "Incremental search
+set ignorecase
+
+filetype plugin on
+filetype plugin indent on
+" Enable HTML tag matching using the % key
+runtime macros/matchit.vim
 
 " Uncomment for Purify Theme : https://github.com/kyoz/purify
 packadd! purify
 colorscheme purify
 let g:lightline = {
       \ 'colorscheme': 'purify',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
       \ }
 " Customize line highlight with blue background instead of underline
 highlight CursorLine term=bold cterm=bold ctermfg=NONE ctermbg=19
@@ -20,12 +35,17 @@ highlight CursorLine term=bold cterm=bold ctermfg=NONE ctermbg=19
 " Uncomment for Dracula Theme : https://draculatheme.com/vim
 " packadd! dracula
 " colorscheme dracula
-" let g:lightline = {
-"       \ 'colorscheme': 'dracula',
-"       \ }
+"let g:lightline = {
+"      \ 'colorscheme': 'dracula',
+"      \ 'active': {
+"      \   'left': [ [ 'mode', 'paste' ],
+"      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+"      \ },
+"      \ 'component_function': {
+"      \   'gitbranch': 'FugitiveHead'
+"      \ },
+"      \ }
 
-
-filetype plugin indent on
 " show existing tab with 4 spaces width
 set tabstop=4
 " when indenting with '>', use 4 spaces width
@@ -36,6 +56,7 @@ set autoindent
 set smartindent
 " set paste
 set noshowmode "The mode will be shown in the LightLine plugin
+set laststatus=2 "Always show Lightline : https://github.com/itchyny/lightline.vim/issues/489
 set scrolloff=10 " Keep lines below and above the cursor
 " Enables mouse (including for resizing of splits), but use shift for copying text with cursor
 set mouse=a
@@ -43,6 +64,7 @@ set mouse=a
 " set mouse=r
 set noswapfile
 set splitbelow " Open splits below the current window. Useful for :term
+set splitright " Open vertical split to the right
 set termwinsize=8x0
 set signcolumn=yes " Keep Gutter width fixed
 
@@ -67,7 +89,7 @@ autocmd BufWritePre *.go :YcmCompleter Format <afile>
 
 " Show function documentation in a hover popup
 " Default is 4000 milliseconds
-set updatetime=1500
+set updatetime=500
 
 
 " NERDTree config

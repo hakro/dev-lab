@@ -24,6 +24,7 @@ RUN sudo mkdir -p /home/$USERNAME/.vim/backup /home/$USERNAME/.vim/swap /home/$U
     git clone --depth 1 https://github.com/jiangmiao/auto-pairs.git && \
     git clone --depth 1 https://github.com/tpope/vim-commentary && \
     git clone --depth 1 https://github.com/tpope/vim-fugitive.git && \
+    git clone --depth 1 https://github.com/airblade/vim-gitgutter && \
     git clone --depth 1 https://github.com/scrooloose/nerdtree.git && \
     git clone --depth 1 https://github.com/ycm-core/YouCompleteMe.git && \
     cd YouCompleteMe && git submodule update --depth 1 --init --recursive && \
