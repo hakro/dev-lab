@@ -23,5 +23,6 @@ WORKDIR /home/$USERNAME
 
 # Neovim
 RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz && \
-    tar -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz && \
-    echo 'PATH=$PATH:~/nvim-linux64/bin' >> .bashrc
+    sudo tar -C /usr/local -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz && \
+    echo 'PATH=$PATH:/usr/local/nvim-linux64/bin' >> .bashrc && \
+    /usr/local/nvim-linux64/bin/nvim --headless "+Lazy! sync" +MasonUpdate +qa
