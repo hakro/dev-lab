@@ -1,3 +1,7 @@
+-- For inspiration : https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
+
+vim.g.mapleader = " "
+
 vim.o.termguicolors = true
 vim.o.expandtab = true
 vim.o.smartindent = true
@@ -10,11 +14,21 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.scrolloff = 10 -- Keep lines below and above the cursor
 vim.o.noswapfile = true
-
-vim.g.mapleader = " "
+vim.o.hlsearch = false
+vim.o.updatetime = 250 -- Decrease update time
+vim.o.timeout = true
+vim.o.timeoutlen = 300
+vim.o.completeopt = 'menuone,noselect'
+vim.o.ignorecase = true -- Case insensitive searching UNLESS /C or capital in search
+vim.o.smartcase = true
+vim.o.shell = "/bin/bash"
+vim.g.loaded_netrw = 1 -- Disable netrw file explorer
+vim.g.loaded_netrwPlugin = 1
 
 -- Plugin Flags
 local enable_tokyonight = true
+local enable_lualine = true
+local enable_autoclose = true
 local enable_nvimtree = true
 local enable_mason = true
 
@@ -39,8 +53,27 @@ require("lazy").setup({
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd([[colorscheme tokyonight-night]])
-        end,
+            vim.cmd.colorscheme "tokyonight-night"
+        end
+    },
+    {
+        "nvim-lualine/lualine.nvim",
+        enabled = enable_lualine,
+        opts = {
+            options = {
+                icons_enabled = true,
+                theme = "tokyonight",
+                component_separators = "|",
+                section_separators = "",
+            },
+        },
+    },
+    {
+        "m4xshen/autoclose.nvim",
+        enabled = enable_autoclose,
+        config = function()
+            require("autoclose").setup()
+        end
     },
     {
         "nvim-tree/nvim-tree.lua",
@@ -50,8 +83,9 @@ require("lazy").setup({
             "nvim-tree/nvim-web-devicons",
         },
         config = function()
-            require("nvim-tree").setup {}
-        end,
+            require("nvim-tree").setup()
+            vim.keymap.set("n", "<leader>n", "<cmd>NvimTreeToggle<cr>")
+        end
     },
     {
         "williamboman/mason.nvim",
@@ -70,9 +104,3 @@ require("lazy").setup({
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig"
 })
-
-require("mason-lspconfig").setup()
-require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "rust_analyzer" },
-}
-require'lspconfig'.pyright.setup{}
