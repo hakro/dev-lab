@@ -30,7 +30,14 @@ local enable_tokyonight = true
 local enable_lualine = true
 local enable_autoclose = true
 local enable_nvimtree = true
+local enable_bufferline = true
 local enable_mason = true
+
+-- Remove trailing empty spaces:
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*" },
+  command = [[%s/\s\+$//e]],
+})
 
 -- Plugin configs
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -79,12 +86,19 @@ require("lazy").setup({
         "nvim-tree/nvim-tree.lua",
         enabled = enable_nvimtree,
         version = "*",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
+        dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
             require("nvim-tree").setup()
             vim.keymap.set("n", "<leader>n", "<cmd>NvimTreeToggle<cr>")
+        end
+    },
+    {
+        "akinsho/bufferline.nvim",
+        enabled = enable_bufferline,
+        version = "*",
+        dependencies = "nvim-tree/nvim-web-devicons",
+        config = function()
+            require("bufferline").setup()
         end
     },
     {
