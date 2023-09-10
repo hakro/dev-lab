@@ -32,12 +32,12 @@ local enable_autoclose = true
 local enable_comment = true
 local enable_nvimtree = true
 local enable_bufferline = true
-local enable_mason = true
+local enable_lsp = false
 
 -- Remove trailing empty spaces:
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  pattern = { "*" },
-  command = [[%s/\s\+$//e]],
+    pattern = { "*" },
+    command = [[%s/\s\+$//e]],
 })
 
 -- Plugin configs
@@ -126,19 +126,29 @@ require("lazy").setup({
 
     },
     {
-        "williamboman/mason.nvim",
-        enabled = enable_mason,
-        build = ":MasonUpdate",
-        opts = {
-            ui = {
-                icons = {
-                    package_installed = "✓",
-                    package_pending = "➜",
-                    package_uninstalled = "✗"
-                }
-            }
+        'VonHeikemen/lsp-zero.nvim',
+        branch = 'v2.x',
+        enabled = enable_lsp,
+        dependencies = {
+            -- LSP Support
+            {'neovim/nvim-lspconfig'},             -- Required
+            {'williamboman/mason.nvim'},           -- Optional
+            {'williamboman/mason-lspconfig.nvim'}, -- Optional
+            -- Autocompletion
+            {'hrsh7th/nvim-cmp'},     -- Required
+            {'hrsh7th/cmp-nvim-lsp'}, -- Required
+            {'L3MON4D3/LuaSnip'},     -- Required
         }
-    },
-    "williamboman/mason-lspconfig.nvim",
-    "neovim/nvim-lspconfig"
+    }
 })
+
+if enable_lsp then
+    local lsp = require('lsp-zero').preset({})
+    lsp.on_attach(function(client, bufnr)
+        -- see :help lsp-zero-keybindings to learn the available actions
+        lsp.default_keymaps({buffer = bufnr})
+    end)
+    -- (Optional) Configure lua language server for neovim
+    -- require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+    lsp.setup()
+end
