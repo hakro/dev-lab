@@ -29,6 +29,7 @@ vim.g.loaded_netrwPlugin = 1
 local enable_tokyonight = true
 local enable_lualine = true
 local enable_autoclose = true
+local enable_comment = true
 local enable_nvimtree = true
 local enable_bufferline = true
 local enable_mason = true
@@ -66,6 +67,8 @@ require("lazy").setup({
     {
         "nvim-lualine/lualine.nvim",
         enabled = enable_lualine,
+        -- Adding opts automatically calls the plugins setup() function
+        -- See https://github.com/folke/lazy.nvim doc : opts & config
         opts = {
             options = {
                 icons_enabled = true,
@@ -83,6 +86,17 @@ require("lazy").setup({
         end
     },
     {
+        "numToStr/Comment.nvim",
+        enabled = enable_comment,
+        opts = {
+            -- add any options here
+        },
+        lazy = false,
+        config = function()
+            require("Comment").setup()
+        end
+    },
+    {
         "nvim-tree/nvim-tree.lua",
         enabled = enable_nvimtree,
         version = "*",
@@ -97,9 +111,19 @@ require("lazy").setup({
         enabled = enable_bufferline,
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
-        config = function()
-            require("bufferline").setup()
-        end
+        opts = {
+            options = {
+                offsets = {
+                    {
+                        filetype = "NvimTree",
+                        text = "File Explorer",
+                        text_align = "center",
+                        separator = true
+                    }
+                }
+            }
+        }
+
     },
     {
         "williamboman/mason.nvim",
