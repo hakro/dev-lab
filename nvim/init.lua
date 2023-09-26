@@ -1,6 +1,22 @@
 -- For inspiration : https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
 
+-- Plugin Flags
+local enable_tokyonight = true
+local enable_lualine = true
+local enable_autoclose = true
+local enable_gitsigns = true
+local enable_comment = true
+local enable_telescope = true
+local enable_nvimtree = true
+local enable_treesitter = true
+local enable_bufferline = true
+local enable_lsp = true
+
+-- Keymaps
 vim.g.mapleader = " "
+vim.keymap.set("n", "<Tab>", ":bn<CR>") -- TAB key to go to next buffer
+vim.keymap.set("n", "<S-Tab>", ":bp<CR>") -- Shift - TAB key to go to previous buffer
+
 
 vim.o.termguicolors = true
 vim.o.expandtab = true
@@ -18,21 +34,12 @@ vim.o.hlsearch = false
 vim.o.updatetime = 250 -- Decrease update time
 vim.o.timeout = true
 vim.o.timeoutlen = 300
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = "menuone,noselect"
 vim.o.ignorecase = true -- Case insensitive searching UNLESS /C or capital in search
 vim.o.smartcase = true
 vim.o.shell = "/bin/bash"
 vim.g.loaded_netrw = 1 -- Disable netrw file explorer
 vim.g.loaded_netrwPlugin = 1
-
--- Plugin Flags
-local enable_tokyonight = true
-local enable_lualine = true
-local enable_autoclose = true
-local enable_comment = true
-local enable_nvimtree = true
-local enable_bufferline = true
-local enable_lsp = false
 
 -- Remove trailing empty spaces:
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
@@ -86,6 +93,13 @@ require("lazy").setup({
         end
     },
     {
+        "lewis6991/gitsigns.nvim",
+        enabled = enable_gitsigns,
+        config = function()
+            require("gitsigns").setup()
+        end
+    },
+    {
         "numToStr/Comment.nvim",
         enabled = enable_comment,
         opts = {
@@ -97,6 +111,29 @@ require("lazy").setup({
         end
     },
     {
+        "nvim-telescope/telescope.nvim", tag = "0.1.3",
+        enabled = enable_telescope,
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("telescope").setup({
+                defaults = {
+                    layout_strategy = "horizontal",
+                    layout_config = {
+                        horizontal = {
+                            prompt_position = "top",
+                        },
+                    },
+                    sorting_strategy = "ascending",
+                }
+            })
+            local builtin = require("telescope.builtin")
+            vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+            vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+            vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
+            vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
+        end
+    },
+    {
         "nvim-tree/nvim-tree.lua",
         enabled = enable_nvimtree,
         version = "*",
@@ -104,6 +141,49 @@ require("lazy").setup({
         config = function()
             require("nvim-tree").setup()
             vim.keymap.set("n", "<leader>n", "<cmd>NvimTreeToggle<cr>")
+            -- Hack to Jump to latest used buffer when current buffer is closed
+            vim.api.nvim_create_autocmd("BufEnter", {
+                nested = true,
+                callback = function()
+                    local api = require("nvim-tree.api")
+
+                    -- Only 1 window with nvim-tree left: we probably closed a file buffer
+                    if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
+                        -- Required to let the close event complete. An error is thrown without this.
+                        vim.defer_fn(function()
+                            -- close nvim-tree: will go to the last hidden buffer used before closing
+                            api.tree.toggle({find_file = true, focus = true})
+                            -- re-open nivm-tree
+                            api.tree.toggle({find_file = true, focus = true})
+                            -- nvim-tree is still the active window. Go to the previous window.
+                            vim.cmd("wincmd p")
+                        end, 0)
+                    end
+                end
+            })
+        end
+    },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        enabled = enable_treesitter,
+        build = ":TSUpdate",
+        config = function ()
+            local configs = require("nvim-treesitter.configs")
+            configs.setup({
+                ensure_installed = { "c", "lua", "go", "hcl", "javascript", "html", "python" },
+                sync_install = false,
+                highlight = { enable = true },
+                indent = { enable = true },
+                incremental_selection = {
+                    enable = true,
+                    keymaps = {
+                        init_selection = "<CR>",
+                        scope_incremental = "<CR>",
+                        node_incremental = "<TAB>",
+                        node_decremental = "<S-TAB>",
+                    },
+                }
+            })
         end
     },
     {
@@ -126,29 +206,29 @@ require("lazy").setup({
 
     },
     {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v2.x',
+        "VonHeikemen/lsp-zero.nvim",
+        branch = "v3.x",
         enabled = enable_lsp,
         dependencies = {
             -- LSP Support
-            {'neovim/nvim-lspconfig'},             -- Required
-            {'williamboman/mason.nvim'},           -- Optional
-            {'williamboman/mason-lspconfig.nvim'}, -- Optional
+            {"neovim/nvim-lspconfig"},             -- Required
+            {"williamboman/mason.nvim"},           -- Optional
+            {"williamboman/mason-lspconfig.nvim"}, -- Optional
             -- Autocompletion
-            {'hrsh7th/nvim-cmp'},     -- Required
-            {'hrsh7th/cmp-nvim-lsp'}, -- Required
-            {'L3MON4D3/LuaSnip'},     -- Required
+            {"hrsh7th/nvim-cmp"},     -- Required
+            {"hrsh7th/cmp-nvim-lsp"}, -- Required
+            {"L3MON4D3/LuaSnip"},     -- Required
         }
     }
 })
 
 if enable_lsp then
-    local lsp = require('lsp-zero').preset({})
+    local lsp = require("lsp-zero").preset({})
     lsp.on_attach(function(client, bufnr)
         -- see :help lsp-zero-keybindings to learn the available actions
         lsp.default_keymaps({buffer = bufnr})
     end)
     -- (Optional) Configure lua language server for neovim
-    -- require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+    -- require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
     lsp.setup()
 end

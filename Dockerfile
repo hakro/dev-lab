@@ -8,7 +8,9 @@ ARG USERNAME=hakim
 ARG UID="1000"
 ARG GROUP="root"
 
-RUN apt update && apt install -y sudo git curl wget unzip
+RUN apt update && apt install -y --no-install-recommends && \
+    sudo git curl wget unzip && \
+    fd-find ripgrep #Needed by Nvim Telescope
 
 # Create non root user
 RUN useradd --create-home --uid $UID --gid $GROUP --shell /bin/bash $USERNAME && \
