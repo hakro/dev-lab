@@ -8,8 +8,8 @@ ARG USERNAME=hakim
 ARG UID="1000"
 ARG GROUP="root"
 
-RUN apt update && apt install -y --no-install-recommends && \
-    sudo git curl wget unzip && \
+RUN apt update && apt install -y --no-install-recommends \
+    ca-certificates git curl wget unzip \
     fd-find ripgrep #Needed by Nvim Telescope
 
 # Create non root user
@@ -20,11 +20,11 @@ COPY nvim /home/$USERNAME/.config/nvim
 COPY bashrc /home/$USERNAME/.bashrc
 RUN chown -R $USERNAME:$GROUP /home/$USERNAME
 
-USER $USERNAME
-WORKDIR /home/$USERNAME
-
 # Neovim
 RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz && \
-    sudo tar -C /usr/local -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz && \
-    echo 'PATH=$PATH:/usr/local/nvim-linux64/bin' >> .bashrc && \
+    tar -C /usr/local -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz && \
+    echo 'PATH=$PATH:/usr/local/nvim-linux64/bin' >> /home/$USERNAME/.bashrc && \
     /usr/local/nvim-linux64/bin/nvim --headless "+Lazy! sync" +MasonUpdate +qa
+
+USER $USERNAME
+WORKDIR /home/$USERNAME
