@@ -10,7 +10,7 @@ local enable_telescope = true
 local enable_nvimtree = true
 local enable_treesitter = true
 local enable_bufferline = true
-local enable_lsp = true
+local enable_lsp = false
 
 -- Keymaps
 vim.g.mapleader = " "
@@ -82,7 +82,30 @@ require("lazy").setup({
                 theme = "tokyonight",
                 component_separators = "|",
                 section_separators = "",
+
             },
+            sections = {
+                lualine_c = {
+                    {
+                        'filename',
+                        file_status = true,      -- Displays file status (readonly status, modified status)
+                        newfile_status = false,  -- Display new file status (new file means no write after created)
+                        path = 3,                -- 0: Just the filename
+                        -- 1: Relative path
+                        -- 2: Absolute path
+                        -- 3: Absolute path, with tilde as the home directory
+                        -- 4: Filename and parent dir, with tilde as the home directory
+                        shorting_target = 40,    -- Shortens path to leave 40 spaces in the window
+                        -- for other components. (terrible name, any suggestions?)
+                        symbols = {
+                            modified = '[+]',      -- Text to show when the file is modified.
+                            readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
+                            unnamed = '[No Name]', -- Text to show for unnamed buffers.
+                            newfile = '[New]',     -- Text to show for newly created file before first write
+                        }
+                    }
+                }
+            }
         },
     },
     {
@@ -170,7 +193,7 @@ require("lazy").setup({
         config = function ()
             local configs = require("nvim-treesitter.configs")
             configs.setup({
-                ensure_installed = { "c", "lua", "go", "hcl", "javascript", "html", "python" },
+                ensure_installed = { "c", "cpp", "lua", "go", "hcl", "terraform", "javascript", "html", "css", "python" },
                 sync_install = false,
                 highlight = { enable = true },
                 indent = { enable = true },
@@ -231,4 +254,27 @@ if enable_lsp then
     -- (Optional) Configure lua language server for neovim
     -- require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
     lsp.setup()
+
+    local cmp = require('cmp')
+    local cmp_action = require('lsp-zero').cmp_action()
+
+    cmp.setup({
+        mapping = cmp.mapping.preset.insert({
+            ['<CR>'] = cmp.mapping.confirm({select = false}),
+            -- Ctrl+Space to trigger completion menu
+            ['<C-Space>'] = cmp.mapping.complete(),
+            -- Navigate between snippet placeholder
+            ['<C-f>'] = cmp_action.luasnip_jump_forward(),
+            ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+            -- Scroll up and down in the completion documentation
+            ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-d>'] = cmp.mapping.scroll_docs(4),
+            ['<Tab>'] = cmp_action.luasnip_supertab(),
+            ['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
+        })
+    })
+    require("mason").setup()
+    -- Example : to enable clangd
+    -- run : apt install clang, then install clangd from :Mason
+    -- require("lspconfig").clangd.setup({})
 end
