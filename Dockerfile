@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM debian:12-slim
 
 ENV TERM=xterm-256color
 ENV LANG=C.UTF-8
@@ -10,7 +10,7 @@ ARG GROUP="root"
 
 RUN apt update && apt install -y --no-install-recommends \
     ca-certificates git curl wget unzip \
-    fd-find ripgrep #Needed by Nvim Telescope
+    fd-find ripgrep clang #Needed by Nvim Telescope
 
 # Create non root user
 RUN useradd --create-home --uid $UID --gid $GROUP --shell /bin/bash $USERNAME && \

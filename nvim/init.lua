@@ -6,9 +6,11 @@ local enable_lualine = true
 local enable_autoclose = true
 local enable_gitsigns = true
 local enable_comment = true
+local enable_guessindent = true
 local enable_telescope = true
 local enable_nvimtree = true
 local enable_treesitter = true
+local enable_treesitter_context = true
 local enable_bufferline = true
 local enable_lsp = false
 
@@ -134,6 +136,13 @@ require("lazy").setup({
         end
     },
     {
+        "NMAC427/guess-indent.nvim",
+        enabled = enable_guessindent,
+        config = function()
+            require("guess-indent").setup()
+        end
+    },
+    {
         "nvim-telescope/telescope.nvim", tag = "0.1.3",
         enabled = enable_telescope,
         dependencies = { "nvim-lua/plenary.nvim" },
@@ -208,6 +217,10 @@ require("lazy").setup({
                 }
             })
         end
+    },
+    {
+        "nvim-treesitter/nvim-treesitter-context",
+        enabled = enable_treesitter_context,
     },
     {
         "akinsho/bufferline.nvim",
