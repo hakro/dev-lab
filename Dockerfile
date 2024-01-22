@@ -24,7 +24,8 @@ RUN chown -R $USERNAME:$GROUP /home/$USERNAME
 RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz && \
     tar -C /usr/local -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz && \
     echo 'PATH=$PATH:/usr/local/nvim-linux64/bin' >> /home/$USERNAME/.bashrc && \
-    /usr/local/nvim-linux64/bin/nvim --headless "+Lazy! sync" +MasonUpdate +qa
+    /usr/local/nvim-linux64/bin/nvim --headless "+Lazy! install" +qa
+    # /usr/local/nvim-linux64/bin/nvim --headless +TSUpdate +MasonUpdate +qa
 
 USER $USERNAME
 WORKDIR /home/$USERNAME
