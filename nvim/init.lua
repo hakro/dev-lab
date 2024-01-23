@@ -170,6 +170,7 @@ require("lazy").setup({
         enabled = enable_nvimtree,
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
+        keys = {"<leader>n"}, -- Lazy load the module only once key is pressed
         config = function()
             require("nvim-tree").setup()
             vim.keymap.set("n", "<leader>n", "<cmd>NvimTreeToggle<cr>")
@@ -221,6 +222,9 @@ require("lazy").setup({
     {
         "nvim-treesitter/nvim-treesitter-context",
         enabled = enable_treesitter_context,
+        opts = {
+            max_lines = 2, -- Show only this number of lines
+        },
     },
     {
         "akinsho/bufferline.nvim",
@@ -290,4 +294,23 @@ if enable_lsp then
     -- Example : to enable clangd
     -- run : apt install clang, then install clangd from :Mason
     -- require("lspconfig").clangd.setup({})
+
+    -- Install typescript-language-server and/or quick-lint-js from :Mason
+    -- require("lspconfig").tsserver.setup({})
+    -- require("lspconfig").quick_lint_js.setup({})
+
+    -- Install gopls from :Mason
+    -- require("lspconfig").gopls.setup({})
+
+    -- More info https://quick-lint-js.com/blog/show-js-errors-neovim-macos/
+    -- Show diagnostic in gutter ?
+    vim.diagnostic.config({signs = true})
+    -- Show inline errors & warnings
+    vim.diagnostic.config({virtual_text = true})
+    -- Show error while typing in insert mode ?
+    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+            update_in_insert = true,
+        }
+    )
 end
