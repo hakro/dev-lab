@@ -203,7 +203,8 @@ require("lazy").setup({
         config = function ()
             local configs = require("nvim-treesitter.configs")
             configs.setup({
-                ensure_installed = { "c", "cpp", "lua", "go", "hcl", "terraform", "javascript", "html", "css", "python" },
+                ensure_installed = { "c", "cpp", "lua", "go", "hcl", "terraform",
+                    "javascript", "html", "css", "python", "vimdoc" },
                 sync_install = false,
                 highlight = { enable = true },
                 indent = { enable = true },
@@ -223,7 +224,8 @@ require("lazy").setup({
         "nvim-treesitter/nvim-treesitter-context",
         enabled = enable_treesitter_context,
         opts = {
-            max_lines = 2, -- Show only this number of lines
+            max_lines = 3, -- Show only this number of lines
+            trim_scope = 'inner',
         },
     },
     {
