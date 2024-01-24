@@ -146,6 +146,7 @@ require("lazy").setup({
         "nvim-telescope/telescope.nvim", tag = "0.1.5",
         enabled = enable_telescope,
         dependencies = { "nvim-lua/plenary.nvim" },
+        keys = {"<leader>f"}, -- Lazy load the module only once key is pressed
         config = function()
             require("telescope").setup({
                 defaults = {
@@ -156,6 +157,7 @@ require("lazy").setup({
                         },
                     },
                     sorting_strategy = "ascending",
+                    wrap_results = true, -- https://github.com/nvim-telescope/telescope.nvim/issues/1958
                 }
             })
             local builtin = require("telescope.builtin")
@@ -173,7 +175,7 @@ require("lazy").setup({
         keys = {"<leader>n"}, -- Lazy load the module only once key is pressed
         config = function()
             require("nvim-tree").setup()
-            vim.keymap.set("n", "<leader>n", "<cmd>NvimTreeToggle<cr>")
+            vim.keymap.set("n", "<leader>n", "<cmd>NvimTreeFindFileToggle<cr>")
             -- Hack to Jump to latest used buffer when current buffer is closed
             vim.api.nvim_create_autocmd("BufEnter", {
                 nested = true,
