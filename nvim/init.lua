@@ -6,6 +6,7 @@ local enable_lualine = true
 local enable_autoclose = true
 local enable_gitsigns = true
 local enable_comment = true
+local enable_illuminate = true -- Highlight occurences under cursor
 local enable_guessindent = true
 local enable_telescope = true
 local enable_nvimtree = true
@@ -134,6 +135,10 @@ require("lazy").setup({
         config = function()
             require("Comment").setup()
         end
+    },
+    {
+        "RRethy/vim-illuminate",
+        enabled = enable_illuminate,
     },
     {
         "NMAC427/guess-indent.nvim",
