@@ -10,6 +10,7 @@ set relativenumber
 set hlsearch "Highlight search
 set incsearch "Incremental search
 set ignorecase
+set shortmess-=S "Show search count : https://stackoverflow.com/questions/49297579/how-to-count-search-results-in-vim
 
 filetype plugin on
 filetype plugin indent on
