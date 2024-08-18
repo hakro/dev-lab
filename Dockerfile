@@ -4,12 +4,13 @@ ENV TERM=xterm-256color
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
+ARG NVIM_VERSION=v0.10.1
 ARG USERNAME=hakim
 ARG UID="1000"
 ARG GROUP="root"
 
 RUN apt update && apt install -y --no-install-recommends \
-    ca-certificates git curl wget unzip \
+    ca-certificates git curl wget unzip sudo \
     fd-find ripgrep clang #Needed by Nvim Telescope
 
 # Create non root user
@@ -21,11 +22,11 @@ COPY bashrc /home/$USERNAME/.bashrc
 RUN chown -R $USERNAME:$GROUP /home/$USERNAME
 
 # Neovim
-RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz && \
+RUN wget https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim-linux64.tar.gz && \
     tar -C /usr/local -xzf nvim-linux64.tar.gz && rm nvim-linux64.tar.gz && \
     echo 'PATH=$PATH:/usr/local/nvim-linux64/bin' >> /home/$USERNAME/.bashrc && \
-    /usr/local/nvim-linux64/bin/nvim --headless "+Lazy! install" +qa
-    # /usr/local/nvim-linux64/bin/nvim --headless +TSUpdate +MasonUpdate +qa
+    /usr/local/nvim-linux64/bin/nvim --headless "+Lazy! install" +TSUpdate +qa
+    # /usr/local/nvim-linux64/bin/nvim --headless +MasonUpdate +qa
 
 USER $USERNAME
 WORKDIR /home/$USERNAME

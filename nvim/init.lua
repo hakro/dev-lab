@@ -19,7 +19,8 @@ local enable_lsp = false
 vim.g.mapleader = " "
 vim.keymap.set("n", "<Tab>", ":bn<CR>") -- TAB key to go to next buffer
 vim.keymap.set("n", "<S-Tab>", ":bp<CR>") -- Shift - TAB key to go to previous buffer
-
+vim.keymap.set("n", "j", "gj") -- Move down in wrapped line
+vim.keymap.set("n", "k", "gk") -- Move up in wrapped line
 
 vim.o.termguicolors = true
 vim.o.expandtab = true
@@ -32,7 +33,7 @@ vim.o.cursorline = true
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.scrolloff = 10 -- Keep lines below and above the cursor
-vim.o.noswapfile = true
+vim.o.swapfile = false
 vim.o.hlsearch = false
 vim.o.updatetime = 250 -- Decrease update time
 vim.o.timeout = true
@@ -268,7 +269,7 @@ require("lazy").setup({
             {"hrsh7th/cmp-nvim-lsp"}, -- Required
             {"L3MON4D3/LuaSnip"},     -- Required
         }
-    }
+    },
 })
 
 if enable_lsp then
@@ -301,15 +302,40 @@ if enable_lsp then
     })
     require("mason").setup()
     -- Example : to enable clangd
-    -- run : apt install clang, then install clangd from :Mason
-    -- require("lspconfig").clangd.setup({})
+    -- run : apt install clang, then install clangd from :Mason or :MasonInstall clangd
+    require("lspconfig").clangd.setup({})
 
-    -- Install typescript-language-server and/or quick-lint-js from :Mason
+    -- Download NodeJS & Install typescript-language-server and/or quick-lint-js from :Mason
     -- require("lspconfig").tsserver.setup({})
     -- require("lspconfig").quick_lint_js.setup({})
 
-    -- Install gopls from :Mason
-    -- require("lspconfig").gopls.setup({})
+    -- Install gopls from :MasonInstall gopls
+    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#gopls
+    require("lspconfig").gopls.setup({})
+    -- Install goimports :MasonInstall goimports
+    -- https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*.go",
+        callback = function()
+            local params = vim.lsp.util.make_range_params()
+            params.context = {only = {"source.organizeImports"}}
+            -- buf_request_sync defaults to a 1000ms timeout. Depending on your
+            -- machine and codebase, you may want longer. Add an additional
+            -- argument after params if you find that you have to write the file
+            -- twice for changes to be saved.
+            -- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+            local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
+            for cid, res in pairs(result or {}) do
+                for _, r in pairs(res.result or {}) do
+                    if r.edit then
+                        local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+                        vim.lsp.util.apply_workspace_edit(r.edit, enc)
+                    end
+                end
+            end
+            vim.lsp.buf.format({async = false})
+        end
+    })
 
     -- More info https://quick-lint-js.com/blog/show-js-errors-neovim-macos/
     -- Show diagnostic in gutter ?
@@ -319,7 +345,7 @@ if enable_lsp then
     -- Show error while typing in insert mode ?
     vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics, {
-            update_in_insert = true,
+            update_in_insert = false,
         }
     )
 end
