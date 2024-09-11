@@ -10,7 +10,7 @@ ARG UID="1000"
 ARG GROUP="root"
 
 RUN apt update && apt install -y --no-install-recommends \
-    ca-certificates git curl wget unzip sudo \
+    ca-certificates jq git curl wget unzip sudo \
     fd-find ripgrep clang #Needed by Nvim Telescope
 
 # Create non root user

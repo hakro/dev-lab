@@ -152,7 +152,7 @@ require("lazy").setup({
         "nvim-telescope/telescope.nvim", tag = "0.1.5",
         enabled = enable_telescope,
         dependencies = { "nvim-lua/plenary.nvim" },
-        keys = {"<leader>f"}, -- Lazy load the module only once key is pressed
+        -- keys = {"<leader>f"}, -- Lazy load the module only once key is pressed
         config = function()
             require("telescope").setup({
                 defaults = {
@@ -178,7 +178,7 @@ require("lazy").setup({
         enabled = enable_nvimtree,
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
-        keys = {"<leader>n"}, -- Lazy load the module only once key is pressed
+        -- keys = {"<leader>n"}, -- Lazy load the module only once key is pressed
         config = function()
             require("nvim-tree").setup()
             vim.keymap.set("n", "<leader>n", "<cmd>NvimTreeFindFileToggle<cr>")
