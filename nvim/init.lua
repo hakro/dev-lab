@@ -21,6 +21,18 @@ vim.keymap.set("n", "<Tab>", ":bn<CR>") -- TAB key to go to next buffer
 vim.keymap.set("n", "<S-Tab>", ":bp<CR>") -- Shift - TAB key to go to previous buffer
 vim.keymap.set("n", "j", "gj") -- Move down in wrapped line
 vim.keymap.set("n", "k", "gk") -- Move up in wrapped line
+vim.keymap.set("n", "<leader>l", function() -- Toggle left column, to be able to copy with mouse+shift
+    if vim.o.relativenumber or vim.o.number or vim.o.signcolumn == 'yes' then
+        vim.o.relativenumber = false
+        vim.o.number = false
+        vim.o.signcolumn = 'no'
+    else
+        vim.o.relativenumber = true
+        vim.o.number = true
+        vim.o.signcolumn = 'yes'
+    end
+
+end)
 
 vim.o.termguicolors = true
 vim.o.expandtab = true
