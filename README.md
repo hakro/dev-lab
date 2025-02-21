@@ -44,6 +44,7 @@ Air Doc : https://github.com/cosmtrek/air
 - Move to the split above : `ctrl+w k`
 - Move to the split below : `ctrl+w j`
 - Open a buffer number # in a vertical split: `:vert sb#`
+- Close all buffers but current : `:%bd|e#`
 - Close split but leave buffer open : `ctrl-w q`
 - Close tab : `:tabclose`
 
@@ -56,3 +57,7 @@ Air Doc : https://github.com/cosmtrek/air
 - Go to references : `gr`
 - Go to back to the previous cursor position : `ctrl+o`
 - Go to back to the next cursor position : `ctrl+i`
+
+- Start/Stop LSP : `:LspStart` / `:LspStop`
+- Toggle diagnostics : `:lua vim.diagnostic.enable(not vim.diagnostic.is_enabled())`
+- Toggle inlay hints : `:lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())`
