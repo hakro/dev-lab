@@ -17,6 +17,12 @@ filetype plugin indent on
 " Enable HTML tag matching using the % key
 runtime macros/matchit.vim
 
+" On long lines, show the full line instead of @ symbols
+" https://vim.fandom.com/wiki/Working_with_long_lines#Navigating_long_lines_with_Vim's_built-in_capabilities
+set display+=lastline
+nnoremap j gj
+nnoremap k gk
+
 " Uncomment for Purify Theme : https://github.com/kyoz/purify
 packadd! purify
 colorscheme purify
