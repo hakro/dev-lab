@@ -5,12 +5,11 @@ local enable_tokyonight = true
 local enable_lualine = true
 local enable_autoclose = true
 local enable_gitsigns = true
-local enable_comment = true
 local enable_illuminate = true -- Highlight occurences under cursor
 local enable_guessindent = true
 local enable_telescope = true
 local enable_nvimtree = true
-local enable_treesitter = true
+local enable_treesitter = false
 local enable_treesitter_context = true
 local enable_bufferline = true
 local enable_lsp = false
@@ -136,17 +135,6 @@ require("lazy").setup({
         enabled = enable_gitsigns,
         config = function()
             require("gitsigns").setup()
-        end
-    },
-    {
-        "numToStr/Comment.nvim",
-        enabled = enable_comment,
-        opts = {
-            -- add any options here
-        },
-        lazy = false,
-        config = function()
-            require("Comment").setup()
         end
     },
     {
@@ -347,6 +335,25 @@ if enable_lsp then
             end
             vim.lsp.buf.format({async = false})
         end
+    })
+
+    -- :MasonInstall typescript-language-server
+    -- also needs apt install python3-venv
+    require("lspconfig").pylsp.setup({
+        settings = {
+            pylsp = {
+                plugins = {
+                    flake8 = {
+                        enabled = false,
+                    },
+                    pycodestyle = {
+                        enabled = false,
+                        -- ignore = {'E301', },
+                        -- maxLineLength = 100
+                    }
+                }
+            }
+        }
     })
 
     -- More info https://quick-lint-js.com/blog/show-js-errors-neovim-macos/
