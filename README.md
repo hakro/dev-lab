@@ -31,10 +31,13 @@ Air Doc : https://github.com/cosmtrek/air
 - Open a terminal to the side : `:vert term`
 - Run single Normal Mode command while in Insert Mode : `ctrl+o` then the command
 - Normal Mode in terminal : `ctrl+\ ctrl+n`
+- Search history in Ex command mode: `ctrl-f` (or `q:` in Normal mode )
 
 - Go to next buffer : `tab`
 - Go to previous buffer : `shift+tab`
 
+- Windown commands help: `:h CTRL-W`
+- Open help in a new tab: `:tab h xxx`
 - Show open Vim buffers : `:ls` or `:buffers`
 - Go to buffer number # : `:b#`
 - Close buffer by number (number 3 here) : `:bd3`
@@ -44,6 +47,7 @@ Air Doc : https://github.com/cosmtrek/air
 - Move to the split above : `ctrl+w k`
 - Move to the split below : `ctrl+w j`
 - Open a buffer number # in a vertical split: `:vert sb#`
+- Move current window to a new tab: `ctrl-T`
 - Close all buffers but current : `:%bd|e#`
 - Close split but leave buffer open : `ctrl-w q`
 - Close tab : `:tabclose`

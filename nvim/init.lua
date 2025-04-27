@@ -1,17 +1,17 @@
 -- For inspiration : https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
 
 -- Plugin Flags
-local enable_tokyonight = true
-local enable_lualine = true
+local enable_tokyonight = false
+local enable_lualine = false
 local enable_autoclose = true
 local enable_gitsigns = true
 local enable_illuminate = true -- Highlight occurences under cursor
 local enable_guessindent = true
 local enable_telescope = true
-local enable_nvimtree = true
+local enable_nvimtree = false
 local enable_treesitter = false
-local enable_treesitter_context = true
-local enable_bufferline = true
+local enable_treesitter_context = false
+local enable_bufferline = false
 local enable_lsp = false
 
 -- Keymaps
@@ -33,6 +33,12 @@ vim.keymap.set("n", "<leader>l", function() -- Toggle left column, to be able to
 
 end)
 
+vim.cmd.colorscheme("retrobox")
+vim.o.background = "dark"
+vim.o.winborder = "rounded" --For retrobox / tokyonight
+-- vim.o.winborder = "none"
+vim.o.signcolumn = "yes"
+
 vim.o.termguicolors = true
 vim.o.expandtab = true
 vim.o.smartindent = true
@@ -41,20 +47,27 @@ vim.o.shiftwidth = 4
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.cursorline = true
+-- vim.o.winborder = "rounded"
 vim.o.splitright = true
 vim.o.splitbelow = true
-vim.o.scrolloff = 10 -- Keep lines below and above the cursor
+vim.o.scrolloff = 7 -- Keep lines below and above the cursor
 vim.o.swapfile = false
 vim.o.hlsearch = false
-vim.o.updatetime = 250 -- Decrease update time
+vim.o.updatetime = 300 -- Decrease update time
 vim.o.timeout = true
 vim.o.timeoutlen = 300
 vim.o.completeopt = "menuone,noselect"
 vim.o.ignorecase = true -- Case insensitive searching UNLESS /C or capital in search
 vim.o.smartcase = true
 vim.o.shell = "/bin/bash"
-vim.g.loaded_netrw = 1 -- Disable netrw file explorer
-vim.g.loaded_netrwPlugin = 1
+
+-- vim.g.loaded_netrw = 1 -- Disable netrw file explorer if using NvimTree
+-- vim.g.loaded_netrwPlugin = 1
+
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+-- vim.g.netrw_list_hide = '.DS_Store,*/tmp/*,*.so,*.a,*.o,*.swp,*.zip,*.git'
+-- vim.g.netrw_winsize = 75
 
 -- Remove trailing empty spaces:
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
@@ -164,6 +177,11 @@ require("lazy").setup({
                     },
                     sorting_strategy = "ascending",
                     wrap_results = true, -- https://github.com/nvim-telescope/telescope.nvim/issues/1958
+                    file_ignore_patterns = {
+                        "node_modules/",
+                        "thirdparty/",
+                        ".git/"
+                    },
                 }
             })
             local builtin = require("telescope.builtin")
@@ -256,115 +274,29 @@ require("lazy").setup({
 
     },
     {
-        "VonHeikemen/lsp-zero.nvim",
-        branch = "v3.x",
+        "neovim/nvim-lspconfig",
         enabled = enable_lsp,
-        dependencies = {
-            -- LSP Support
-            {"neovim/nvim-lspconfig"},             -- Required
-            {"williamboman/mason.nvim"},           -- Optional
-            {"williamboman/mason-lspconfig.nvim"}, -- Optional
-            -- Autocompletion
-            {"hrsh7th/nvim-cmp"},     -- Required
-            {"hrsh7th/cmp-nvim-lsp"}, -- Required
-            {"L3MON4D3/LuaSnip"},     -- Required
-        }
     },
 })
 
 if enable_lsp then
-    local lsp = require("lsp-zero").preset({})
-    lsp.on_attach(function(client, bufnr)
-        -- see :help lsp-zero-keybindings to learn the available actions
-        lsp.default_keymaps({buffer = bufnr})
-    end)
-    -- (Optional) Configure lua language server for neovim
-    -- require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
-    lsp.setup()
+     --vim.lsp.enable('clangd')
 
-    local cmp = require('cmp')
-    local cmp_action = require('lsp-zero').cmp_action()
+     vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+     vim.keymap.set('n', 'gl', vim.diagnostic.open_float) -- Instead of of <C-w>d
+     vim.keymap.set('i', '<C-Space>', function()
+         vim.lsp.completion.get()
+     end)
 
-    cmp.setup({
-        mapping = cmp.mapping.preset.insert({
-            ['<CR>'] = cmp.mapping.confirm({select = false}),
-            -- Ctrl+Space to trigger completion menu
-            ['<C-Space>'] = cmp.mapping.complete(),
-            -- Navigate between snippet placeholder
-            ['<C-f>'] = cmp_action.luasnip_jump_forward(),
-            ['<C-b>'] = cmp_action.luasnip_jump_backward(),
-            -- Scroll up and down in the completion documentation
-            ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-d>'] = cmp.mapping.scroll_docs(4),
-            ['<Tab>'] = cmp_action.luasnip_supertab(),
-            ['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
-        })
-    })
-    require("mason").setup()
-    -- Example : to enable clangd
-    -- run : apt install clang, then install clangd from :Mason or :MasonInstall clangd
-    require("lspconfig").clangd.setup({})
-
-    -- Download NodeJS & Install typescript-language-server and/or quick-lint-js from :Mason
-    -- require("lspconfig").tsserver.setup({})
-    -- require("lspconfig").quick_lint_js.setup({})
-
-    -- Install gopls from :MasonInstall gopls
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#gopls
-    require("lspconfig").gopls.setup({})
-    -- Install goimports :MasonInstall goimports
-    -- https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
-    vim.api.nvim_create_autocmd("BufWritePre", {
-        pattern = "*.go",
-        callback = function()
-            local params = vim.lsp.util.make_range_params()
-            params.context = {only = {"source.organizeImports"}}
-            -- buf_request_sync defaults to a 1000ms timeout. Depending on your
-            -- machine and codebase, you may want longer. Add an additional
-            -- argument after params if you find that you have to write the file
-            -- twice for changes to be saved.
-            -- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
-            local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
-            for cid, res in pairs(result or {}) do
-                for _, r in pairs(res.result or {}) do
-                    if r.edit then
-                        local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
-                        vim.lsp.util.apply_workspace_edit(r.edit, enc)
-                    end
-                end
-            end
-            vim.lsp.buf.format({async = false})
-        end
-    })
-
-    -- :MasonInstall typescript-language-server
-    -- also needs apt install python3-venv
-    require("lspconfig").pylsp.setup({
-        settings = {
-            pylsp = {
-                plugins = {
-                    flake8 = {
-                        enabled = false,
-                    },
-                    pycodestyle = {
-                        enabled = false,
-                        -- ignore = {'E301', },
-                        -- maxLineLength = 100
-                    }
-                }
-            }
-        }
-    })
-
-    -- More info https://quick-lint-js.com/blog/show-js-errors-neovim-macos/
-    -- Show diagnostic in gutter ?
-    vim.diagnostic.config({signs = true})
-    -- Show inline errors & warnings
-    vim.diagnostic.config({virtual_text = true})
-    -- Show error while typing in insert mode ?
-    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-        vim.lsp.diagnostic.on_publish_diagnostics, {
-            update_in_insert = false,
-        }
-    )
+     -- More info https://quick-lint-js.com/blog/show-js-errors-neovim-macos/
+     -- Show diagnostic in gutter ?
+     vim.diagnostic.config({signs = true})
+     -- Show inline errors & warnings
+     vim.diagnostic.config({virtual_text = true})
+     -- Show error while typing in insert mode ?
+     vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+         vim.lsp.diagnostic.on_publish_diagnostics, {
+             update_in_insert = false,
+         }
+     )
 end
