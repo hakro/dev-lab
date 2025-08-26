@@ -4,7 +4,7 @@ ENV TERM=xterm-256color
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
-ARG NVIM_VERSION=v0.11.1
+ARG NVIM_VERSION=v0.11.3
 ARG USERNAME=hakim
 ARG UID="1000"
 
@@ -13,7 +13,7 @@ COPY bashrc /home/$USERNAME/.bashrc
 
 RUN <<EOF
 apt update && apt install -y --no-install-recommends \
-ca-certificates jq git curl wget unzip sudo clang
+ca-certificates jq git curl wget unzip sudo clang less
 rm -rf /var/lib/apt/lists/*
 
 userdel ubuntu && rm -rf /home/ubuntu

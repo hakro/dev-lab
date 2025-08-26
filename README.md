@@ -7,7 +7,7 @@ This Docker image comes preconfigured with a Vim config to make Go & Typescript 
 To use it, switch to your project directory, and run 
 
 ```console
-docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/Projects hakimr/dev-lab bash
+docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/home/hakim/Projects hakrou/dev-lab
 ```
 
 If you need to run the container with a MariaDB and Adminer, you can use Docker Compose instead
@@ -29,9 +29,12 @@ Air Doc : https://github.com/cosmtrek/air
 
 - Open a terminal below : `:term`
 - Open a terminal to the side : `:vert term`
+- Paste into terminal from `"` registry : `ctrl-w ""` (Terminal needs to be in insert mode)
 - Run single Normal Mode command while in Insert Mode : `ctrl+o` then the command
 - Normal Mode in terminal : `ctrl+\ ctrl+n`
 - Search history in Ex command mode: `ctrl-f` (or `q:` in Normal mode )
+- Move to beginning and and of Visual selection: `o`
+- Reselect last visually selected block: `gv`
 
 - Go to next buffer : `tab`
 - Go to previous buffer : `shift+tab`
@@ -41,6 +44,7 @@ Air Doc : https://github.com/cosmtrek/air
 - Show open Vim buffers : `:ls` or `:buffers`
 - Go to buffer number # : `:b#`
 - Close buffer by number (number 3 here) : `:bd3`
+- Close multiple buffers by number : `:bd 3 5 10`
 - Swap Split positions : `ctrl+w r`
 - Move split around : `ctrl+w HJKL` (switch from horizontal to vertical & vice versa)
 - Move to new split : `ctrl+w w`
