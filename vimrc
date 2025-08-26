@@ -1,124 +1,94 @@
+" Useful Plugins
+" git clone --depth 1 https://github.com/jiangmiao/auto-pairs.git ~/.vim/pack/plugins/start
+" git clone --depth 1 https://github.com/tpope/vim-commentary.git ~/.vim/pack/plugins/start
+" git clone --depth 1 https://github.com/tpope/vim-sleuth.git ~/.vim/pack/plugins/start
+" git clone --depth 1 https://github.com/airblade/vim-gitgutter.git ~/.vim/pack/plugins/start
+"
+" Comment C(PP) files with // instead of /**/
+" echo "setlocal commentstring=//\ %s" > ~/.vim/after/ftplugin/c.vim
+
 set nocompatible
 set encoding=utf-8
 set fileencoding=utf-8
 set shell=/bin/bash
 
+colorscheme habamax
+set background=dark " or light
+
 syntax on
 set cursorline
 set number
 set relativenumber
-set hlsearch "Highlight search
-set incsearch "Incremental search
+set signcolumn=yes " Keep Gutter width fixed
+set hlsearch " Highlight search
+set incsearch " Incremental search
 set ignorecase
-set shortmess-=S "Show search count : https://stackoverflow.com/questions/49297579/how-to-count-search-results-in-vim
+set shortmess-=S " Show search count : https://stackoverflow.com/questions/49297579/how-to-count-search-results-in-vim
+set updatetime=300
+
+" Show auto doc in a popup instead of a preview split
+set completeopt=popup,menuone 
+
+set wildmenu " Show TAB completion in a vertical menu
+set wildoptions=pum " Show as a PopUpMenu
+" set wildignore=*.o,*.a,*.d,**/thirdparty/*,node_modules/*,bin/*,.git/* "Helpful for things like :find **/*.cpp
+set wildignore=*.o,*.a,*.d,node_modules/*,bin/*,.git/* "Helpful for things like :find **/*.cpp
+
+let g:netrw_banner=0
+let g:netrw_list_hide= '.DS_Store,*/tmp/*,.*\.so,.*\.a,.*\.o,*.swp,*.zip,*.git'
+let g:netrw_sort_by = 'name'
+let g:netrw_sort_sequence = '[\/]$' " Show dirs first, and group .h and .c/cpp files
 
 filetype plugin on
 filetype plugin indent on
 " Enable HTML tag matching using the % key
-runtime macros/matchit.vim
+" runtime macros/matchit.vim
 
 " On long lines, show the full line instead of @ symbols
 " https://vim.fandom.com/wiki/Working_with_long_lines#Navigating_long_lines_with_Vim's_built-in_capabilities
 set display+=lastline
 nnoremap j gj
 nnoremap k gk
+inoremap jk <Esc>
+inoremap kj <Esc>
+" Jump to exact column of a mark, instead of begining of line
+nnoremap ' `
 
-" Uncomment for Purify Theme : https://github.com/kyoz/purify
-packadd! purify
-colorscheme purify
-let g:lightline = {
-      \ 'colorscheme': 'purify',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ },
-      \ }
-" Customize line highlight with blue background instead of underline
-highlight CursorLine term=bold cterm=bold ctermfg=NONE ctermbg=19
-
-" Uncomment for Dracula Theme : https://draculatheme.com/vim
-" packadd! dracula
-" colorscheme dracula
-"let g:lightline = {
-"      \ 'colorscheme': 'dracula',
-"      \ 'active': {
-"      \   'left': [ [ 'mode', 'paste' ],
-"      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-"      \ },
-"      \ 'component_function': {
-"      \   'gitbranch': 'FugitiveHead'
-"      \ },
-"      \ }
-
-" show existing tab with 4 spaces width
-set tabstop=4
-" when indenting with '>', use 4 spaces width
-set shiftwidth=4
+set tabstop=4 " show existing tab with 4 spaces width
+set shiftwidth=4 " when indenting with '>', use 4 spaces width
 " On pressing tab, insert 4 spaces
 " set expandtab
 set autoindent
 set smartindent
 " set paste
-set noshowmode "The mode will be shown in the LightLine plugin
-set laststatus=2 "Always show Lightline : https://github.com/itchyny/lightline.vim/issues/489
-set scrolloff=10 " Keep lines below and above the cursor
+set laststatus=2 "Always show Line with file name
+set scrolloff=3 " Keep lines below and above the cursor
 " Enables mouse (including for resizing of splits), but use shift for copying text with cursor
 set mouse=a
 " Disables mouse resize, but just select text without shift to copy
 " set mouse=r
-set noswapfile
 set splitbelow " Open splits below the current window. Useful for :term
 set splitright " Open vertical split to the right
-set termwinsize=8x0
-set signcolumn=yes " Keep Gutter width fixed
 
-" Change backup and swp file locations
-set backupdir=~/.vim/backup//
-set directory=~/.vim/swap//
-set undodir=~/.vim/undo//
+set noswapfile
+set nobackup
+set undodir=~/.vim/undo/
 
-set completeopt=popup,menuone " Show auto doc in a popup instead of a preview split
-" Default
-" set completeopt=preview,menuone
+" Hide line numbers in Terminal Window
+autocmd TerminalOpen * setlocal nonumber norelativenumber signcolumn=no
+" set termwinsize=8x0
 
-" YOU COMPLETE ME config
-" gd shortcut for go to declaration
-nnoremap gd :YcmCompleter GoToDefinition<CR>
-" Automatically hide documentation preview. Only useful if completeopt=preview
-" let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_autoclose_preview_window_after_insertion = 1
+" Use <space>l toggle line number on and off
+nnoremap <SPACE>l <CMD>call ToggleLineNumber()<CR>
+def! ToggleLineNumber()
+	if &number || &relativenumber
+		setlocal nonumber
+		setlocal norelativenumber
+		setlocal signcolumn=no
+	else
+		setlocal number
+		setlocal relativenumber
+		setlocal signcolumn=yes
+	endif
+enddef
 
-" Run Go Format when saving a file
-autocmd BufWritePre *.go :YcmCompleter Format <afile>
-
-" Show function documentation in a hover popup
-" Default is 4000 milliseconds
-set updatetime=500
-
-
-" NERDTree config
-" Start NERDTree and leave the cursor in it.
-" autocmd VimEnter * NERDTree
-" Start NERDTree and put the cursor back in the other window.
-autocmd VimEnter * NERDTree | wincmd p
-" Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * silent NERDTreeMirror
-" Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    \ quit | endif
-
-" Autoclose brackets, parenthesis ...
-" Not needed when using the plugin auto-pairs
-" inoremap " ""<left>
-" inoremap ' ''<left>
-" inoremap ( ()<left>
-" inoremap [ []<left>
-" inoremap { {}<left>
-" inoremap {<CR> {<CR>}<ESC>O
-" inoremap {;<CR> {<CR>};<ESC>O
-
-" Autocomplete when pressing dot (vim-go)
-"au filetype go inoremap <buffer> . .<C-x><C-o>

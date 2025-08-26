@@ -21,6 +21,8 @@ vim.keymap.set("n", "<S-Tab>", ":bp<CR>") -- Shift - TAB key to go to previous b
 vim.keymap.set("n", "j", "gj") -- Move down in wrapped line
 vim.keymap.set("n", "k", "gk") -- Move up in wrapped line
 vim.keymap.set("n", "'", "`") -- Jump to exact position when using marks, instead of beginning of line
+vim.keymap.set("i", "jk", "<Esc>")
+vim.keymap.set("i", "kj", "<Esc>")
 vim.keymap.set("n", "<leader>l", function() -- Toggle left column, to be able to copy with mouse+shift
     if vim.o.relativenumber or vim.o.number or vim.o.signcolumn == 'yes' then
         vim.o.relativenumber = false
@@ -62,9 +64,11 @@ vim.o.ignorecase = true -- Case insensitive searching UNLESS /C or capital in se
 vim.o.smartcase = true
 vim.o.shell = "/bin/bash"
 
+-- vim.o.path = "**"
+vim.o.wildignore = "**/bin/*,*.o,*.a,*.obj,*.d,*.data,__pycache__/*,.git/*,node_modules/*,**/thirdparty/*,tests/*,**/unvendored/*,**/*.moc.cpp"
+
 -- vim.g.loaded_netrw = 1 -- Disable netrw file explorer if using NvimTree
 -- vim.g.loaded_netrwPlugin = 1
-
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 3
 vim.g.netrw_list_hide = '.DS_Store,*/tmp/*,.*\\.so,.*\\.a,.*\\.o,*.swp,*.zip,*.git'
@@ -288,10 +292,11 @@ require("lazy").setup({
 })
 
 if enable_lsp then
-    --vim.lsp.enable('clangd')
     vim.lsp.config['clangd'] = {
         cmd = {'clangd', '--background-index'}, -- should be good for speed
     }
+    -- Enable it here
+    --vim.lsp.enable('clangd')
 
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
     vim.keymap.set('n', 'gl', vim.diagnostic.open_float) -- Instead of of <C-w>d
@@ -304,15 +309,12 @@ if enable_lsp then
     vim.keymap.set("n", "<leader>dq", vim.diagnostic.setqflist)  -- Get Global Diagnostics in QFixList
     vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist) -- Get local buffer Diagnostics in LocList
 
-    -- More info https://quick-lint-js.com/blog/show-js-errors-neovim-macos/
-    -- Show diagnostic in gutter ?
-    vim.diagnostic.config({signs = true})
-    -- Show inline errors & warnings
-    vim.diagnostic.config({virtual_text = true})
-    -- Show error while typing in insert mode ?
-    vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        update_in_insert = false,
-    }
-    )
+    vim.diagnostic.config({
+        signs = true,             -- Toggle diagnostic in gutter
+        virtual_text = false,     -- Toggle inline errors & warnings
+        update_in_insert = false, -- Show error while typing in insert mode
+    })
+
+    -- Toggle inlays (hints of function paramters)
+    vim.lsp.inlay_hint.enable(false)
 end
