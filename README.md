@@ -33,11 +33,15 @@ Air Doc : https://github.com/cosmtrek/air
 - Run single Normal Mode command while in Insert Mode : `ctrl+o` then the command
 - Normal Mode in terminal : `ctrl+\ ctrl+n`
 - Search history in Ex command mode: `ctrl-f` (or `q:` in Normal mode )
-- Move to beginning and and of Visual selection: `o`
+- Move to beginning and end of Visual selection: `o`
 - Reselect last visually selected block: `gv`
+- Align spaces between types and variable names: `:!column -t`
 
 - Go to next buffer : `tab`
 - Go to previous buffer : `shift+tab`
+
+- Netrw open file in previously selected split: `shift+p`
+- Netrw open file in vertical split: `v`
 
 - Windown commands help: `:h CTRL-W`
 - Open help in a new tab: `:tab h xxx`
@@ -52,6 +56,7 @@ Air Doc : https://github.com/cosmtrek/air
 - Move to the split below : `ctrl+w j`
 - Open a buffer number # in a vertical split: `:vert sb#`
 - Move current window to a new tab: `ctrl-T`
+- Go to definition in new vert split: `ctrl-w v` then `gd`
 - Close all buffers but current : `:%bd|e#`
 - Close split but leave buffer open : `ctrl-w q`
 - Close tab : `:tabclose`
