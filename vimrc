@@ -7,6 +7,7 @@
 " Comment C(PP) files with // instead of /**/
 " echo "setlocal commentstring=//\ %s" > ~/.vim/after/ftplugin/c.vim
 
+let mapleader=" "
 set nocompatible
 set encoding=utf-8
 set fileencoding=utf-8
@@ -32,7 +33,10 @@ set completeopt=popup,menuone
 set wildmenu " Show TAB completion in a vertical menu
 set wildoptions=pum " Show as a PopUpMenu
 " set wildignore=*.o,*.a,*.d,**/thirdparty/*,node_modules/*,bin/*,.git/* "Helpful for things like :find **/*.cpp
-set wildignore=*.o,*.a,*.d,node_modules/*,bin/*,.git/* "Helpful for things like :find **/*.cpp
+"Helpful for things like :find **/*.cpp
+set wildignore=**/bin/*,*.so,*.o,*.a,*.obj,*.d,*.data,*.pyc,__pycache__/*,.git/*,node_modules/*,**/thirdparty/*,**/unvendored/*,**/*.moc.cpp,*.dat
+
+let &grepprg='grep -HIn --exclude-dir=.git $* /dev/null'
 
 let g:netrw_banner=0
 let g:netrw_list_hide= '.DS_Store,*/tmp/*,.*\.so,.*\.a,.*\.o,*.swp,*.zip,*.git'
@@ -53,6 +57,9 @@ inoremap jk <Esc>
 inoremap kj <Esc>
 " Jump to exact column of a mark, instead of begining of line
 nnoremap ' `
+
+nnoremap <leader>e :e **/*
+nnoremap <leader>f :grep -r --include=*{.cpp,.h} --exclude=*.moc.cpp "" .<left><left><left>
 
 set tabstop=4 " show existing tab with 4 spaces width
 set shiftwidth=4 " when indenting with '>', use 4 spaces width

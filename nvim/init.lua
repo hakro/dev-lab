@@ -23,15 +23,16 @@ vim.keymap.set("n", "k", "gk") -- Move up in wrapped line
 vim.keymap.set("n", "'", "`") -- Jump to exact position when using marks, instead of beginning of line
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("i", "kj", "<Esc>")
+vim.keymap.set("n", "<leader>e", ":e **/*") -- Search file recusively
 vim.keymap.set("n", "<leader>l", function() -- Toggle left column, to be able to copy with mouse+shift
-    if vim.o.relativenumber or vim.o.number or vim.o.signcolumn == 'yes' then
+    if vim.o.relativenumber or vim.o.number or vim.o.signcolumn == "yes" then
         vim.o.relativenumber = false
         vim.o.number = false
-        vim.o.signcolumn = 'no'
+        vim.o.signcolumn = "no"
     else
         vim.o.relativenumber = true
         vim.o.number = true
-        vim.o.signcolumn = 'yes'
+        vim.o.signcolumn = "yes"
     end
 
 end)
@@ -65,19 +66,22 @@ vim.o.smartcase = true
 vim.o.shell = "/bin/bash"
 
 -- vim.o.path = "**"
-vim.o.wildignore = "**/bin/*,*.o,*.a,*.obj,*.d,*.data,__pycache__/*,.git/*,node_modules/*,**/thirdparty/*,tests/*,**/unvendored/*,**/*.moc.cpp"
+vim.o.wildignore = "**/bin/*,*.so,*.o,*.a,*.obj,*.d,*.data,*.pyc,__pycache__/*,.git/*,node_modules/*,**/thirdparty/*,**/unvendored/*,**/*.moc.cpp,*.dat"
+
+-- Exclude .git directory
+vim.o.grepprg = "grep -HIn --exclude-dir=.git $* /dev/null"
 
 -- vim.g.loaded_netrw = 1 -- Disable netrw file explorer if using NvimTree
 -- vim.g.loaded_netrwPlugin = 1
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 3
-vim.g.netrw_list_hide = '.DS_Store,*/tmp/*,.*\\.so,.*\\.a,.*\\.o,*.swp,*.zip,*.git'
--- vim.g.netrw_list_hide = '.DS_Store,*/tmp/*,*.so,*.a,*.o,*.swp,*.zip,*.git'
+vim.g.netrw_list_hide = ".DS_Store,*/tmp/*,.*\\.so,.*\\.a,.*\\.o,*.swp,*.zip,*.git"
+-- vim.g.netrw_list_hide = ".DS_Store,*/tmp/*,*.so,*.a,*.o,*.swp,*.zip,*.git"
 -- vim.g.netrw_winsize = 75
 -- Sort so that dirs are first, and .h and .c(pp) files are actually next to each other
 -- Double square brackets [[ ]] are used to avoid escaping.
 vim.g.netrw_sort_sequence = [[[\/]$]]
-vim.g.netrw_sort_by = 'name'
+vim.g.netrw_sort_by = "name"
 
 -- Remove trailing empty spaces:
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
@@ -125,7 +129,7 @@ require("lazy").setup({
             sections = {
                 lualine_c = {
                     {
-                        'filename',
+                        "filename",
                         file_status = true,      -- Displays file status (readonly status, modified status)
                         newfile_status = false,  -- Display new file status (new file means no write after created)
                         path = 3,                -- 0: Just the filename
@@ -136,10 +140,10 @@ require("lazy").setup({
                         shorting_target = 40,    -- Shortens path to leave 40 spaces in the window
                         -- for other components. (terrible name, any suggestions?)
                         symbols = {
-                            modified = '[+]',      -- Text to show when the file is modified.
-                            readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
-                            unnamed = '[No Name]', -- Text to show for unnamed buffers.
-                            newfile = '[New]',     -- Text to show for newly created file before first write
+                            modified = "[+]",      -- Text to show when the file is modified.
+                            readonly = "[-]",      -- Text to show when the file is non-modifiable or readonly.
+                            unnamed = "[No Name]", -- Text to show for unnamed buffers.
+                            newfile = "[New]",     -- Text to show for newly created file before first write
                         }
                     }
                 }
@@ -263,7 +267,7 @@ require("lazy").setup({
         enabled = enable_treesitter_context,
         opts = {
             max_lines = 3, -- Show only this number of lines
-            trim_scope = 'inner',
+            trim_scope = "inner",
         },
     },
     {
@@ -283,7 +287,6 @@ require("lazy").setup({
                 }
             }
         }
-
     },
     {
         "neovim/nvim-lspconfig",
@@ -292,15 +295,16 @@ require("lazy").setup({
 })
 
 if enable_lsp then
-    vim.lsp.config['clangd'] = {
-        cmd = {'clangd', '--background-index'}, -- should be good for speed
+    vim.lsp.config["clangd"] = {
+        cmd = {"clangd", "--background-index"}, -- should be good for speed
     }
     -- Enable it here
-    --vim.lsp.enable('clangd')
+    -- vim.lsp.enable("clangd")
+    -- vim.keymap.set("n", "<leader>f", ":grep -r --include=*{.cpp,.h} --exclude=*.moc.cpp \"\" .<left><left><left>") -- Global recursive grep
 
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
-    vim.keymap.set('n', 'gl', vim.diagnostic.open_float) -- Instead of of <C-w>d
-    vim.keymap.set('i', '<C-Space>', function()
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+    vim.keymap.set("n", "gl", vim.diagnostic.open_float) -- Instead of of <C-w>d
+    vim.keymap.set("i", "<C-Space>", function()
         vim.lsp.completion.get()
     end)
 
