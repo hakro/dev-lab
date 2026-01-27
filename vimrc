@@ -28,7 +28,7 @@ set shortmess-=S " Show search count : https://stackoverflow.com/questions/49297
 set updatetime=300
 
 " Show auto doc in a popup instead of a preview split
-set completeopt=popup,menuone 
+set completeopt=popup,menuone
 
 set wildmenu " Show TAB completion in a vertical menu
 set wildoptions=pum " Show as a PopUpMenu
@@ -57,12 +57,17 @@ inoremap jk <Esc>
 inoremap kj <Esc>
 " Jump to exact column of a mark, instead of begining of line
 nnoremap ' `
-
+" Jump to alternate file (^ does not work with AZERTY)
+nnoremap <C-p> <C-^>
 nnoremap <leader>e :e **/*
-nnoremap <leader>f :grep -r --include=*{.cpp,.h} --exclude=*.moc.cpp "" .<left><left><left>
+" nnoremap <leader>f :grep -r "" .<left><left><left>
+nnoremap <leader>f :grep -r --exclude-dir=.git --exclude=*.moc.cpp --include=*{.cpp,.h} "" .<left><left><left>
+nnoremap <Esc> :noh<CR>
+nnoremap <leader>w :set wrap!<CR>
 
 set tabstop=4 " show existing tab with 4 spaces width
 set shiftwidth=4 " when indenting with '>', use 4 spaces width
+set cinoptions=l1 "Better indentation for C switch case
 " On pressing tab, insert 4 spaces
 " set expandtab
 set autoindent
@@ -84,6 +89,9 @@ set undodir=~/.vim/undo/
 " Hide line numbers in Terminal Window
 autocmd TerminalOpen * setlocal nonumber norelativenumber signcolumn=no
 " set termwinsize=8x0
+
+" Remove trailing spaces
+autocmd BufWritePre * :%s/\s\+$//e
 
 " Use <space>l toggle line number on and off
 nnoremap <SPACE>l <CMD>call ToggleLineNumber()<CR>

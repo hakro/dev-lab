@@ -16,6 +16,7 @@ local enable_lsp = false
 
 -- Keymaps
 vim.g.mapleader = " "
+vim.keymap.set("n", "<C-p>", "<C-^>") -- Switch to alternate file (^ is not detected in AZERTY)
 vim.keymap.set("n", "<Tab>", ":bn<CR>") -- TAB key to go to next buffer
 vim.keymap.set("n", "<S-Tab>", ":bp<CR>") -- Shift - TAB key to go to previous buffer
 vim.keymap.set("n", "j", "gj") -- Move down in wrapped line
@@ -24,6 +25,9 @@ vim.keymap.set("n", "'", "`") -- Jump to exact position when using marks, instea
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("i", "kj", "<Esc>")
 vim.keymap.set("n", "<leader>e", ":e **/*") -- Search file recusively
+vim.keymap.set("n", "<leader>w", function() -- Toggle line wrapping
+    vim.o.wrap = not vim.o.wrap
+end)
 vim.keymap.set("n", "<leader>l", function() -- Toggle left column, to be able to copy with mouse+shift
     if vim.o.relativenumber or vim.o.number or vim.o.signcolumn == "yes" then
         vim.o.relativenumber = false
@@ -87,6 +91,12 @@ vim.g.netrw_sort_by = "name"
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = { "*" },
     command = [[%s/\s\+$//e]],
+})
+
+-- Start term in insert mode, like vim
+vim.api.nvim_create_autocmd("TermOpen", {
+    pattern = "*",
+    command = "startinsert",
 })
 
 -- Plugin configs
@@ -304,6 +314,8 @@ if enable_lsp then
 
     vim.keymap.set("n", "gd", vim.lsp.buf.definition)
     vim.keymap.set("n", "gl", vim.diagnostic.open_float) -- Instead of of <C-w>d
+    -- Switch from/to .h and .cxx files (comes from plugin neovim/nvim-lspconfig)
+    vim.keymap.set("n", "<C-h>", vim.cmd.LspClangdSwitchSourceHeader)
     vim.keymap.set("i", "<C-Space>", function()
         vim.lsp.completion.get()
     end)

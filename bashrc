@@ -3,3 +3,5 @@ parse_git_branch() {
 }
 
 PS1="${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;32m\] @ \[\033[01;31m\]DevLab\[\033[00m\]: \[\033[01;32m\]\w\[\033[00m\]\$\n\[\033[33m\]\$(parse_git_branch)\[\033[00m\]-> "
+
+HISTIGNORE='history*:*force*:rm *:*delete*:*uninstall*:export AWS_*:git restore*:git commit *--amend*:git rebase*:git reset*:git revert*:terraform apply*:terraform destroy*'
