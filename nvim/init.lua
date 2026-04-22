@@ -64,7 +64,7 @@ vim.o.hlsearch = false
 vim.o.updatetime = 300 -- Decrease update time
 vim.o.timeout = true
 vim.o.timeoutlen = 300
-vim.o.completeopt = "menuone,noselect"
+-- vim.o.completeopt = "menuone,noselect"
 vim.o.ignorecase = true -- Case insensitive searching UNLESS /C or capital in search
 vim.o.smartcase = true
 vim.o.shell = "/bin/bash"
@@ -93,7 +93,10 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     command = [[%s/\s\+$//e]],
 })
 
--- Start term in insert mode, like vim
+-- Start term in split and in insert mode, like vim
+vim.cmd([[
+    cabbrev term split\|terminal
+]])
 vim.api.nvim_create_autocmd("TermOpen", {
     pattern = "*",
     command = "startinsert",

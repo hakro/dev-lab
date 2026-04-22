@@ -28,7 +28,7 @@ set shortmess-=S " Show search count : https://stackoverflow.com/questions/49297
 set updatetime=300
 
 " Show auto doc in a popup instead of a preview split
-set completeopt=popup,menuone
+" set completeopt=popup
 
 set wildmenu " Show TAB completion in a vertical menu
 set wildoptions=pum " Show as a PopUpMenu
@@ -61,9 +61,13 @@ nnoremap ' `
 nnoremap <C-p> <C-^>
 nnoremap <leader>e :e **/*
 " nnoremap <leader>f :grep -r "" .<left><left><left>
-nnoremap <leader>f :grep -r --exclude-dir=.git --exclude=*.moc.cpp --include=*{.cpp,.h} "" .<left><left><left>
+" nnoremap <leader>f :grep -r --exclude-dir=.git --exclude=*.moc.cpp --include=*{.cpp,.h} "" .<left><left><left>
+nnoremap <leader>f :grep -r "" .<left><left><left>
 nnoremap <Esc> :noh<CR>
 nnoremap <leader>w :set wrap!<CR>
+
+nnoremap <leader>gp :GitGutterPrevHunk<CR>
+nnoremap <leader>gn :GitGutterNextHunk<CR>
 
 set tabstop=4 " show existing tab with 4 spaces width
 set shiftwidth=4 " when indenting with '>', use 4 spaces width
@@ -106,4 +110,3 @@ def! ToggleLineNumber()
 		setlocal signcolumn=yes
 	endif
 enddef
-
