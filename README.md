@@ -2,9 +2,9 @@
 
 ## Run the container
 
-This Docker image comes preconfigured with a Vim config to make Go & Typescript development easy.
+This Docker image comes preconfigured with a basic Neovim installation, ready to be extended.
 
-To use it, switch to your project directory, and run 
+To use it, switch to your project directory, and run
 
 ```console
 docker run -it --name dev-lab -p 7000-7005:7000-7005 -v $PWD:/home/hakim/Projects hakrou/dev-lab
@@ -18,12 +18,6 @@ docker compose up
 docker ps
 docker exec -it XXX bash
 ```
-
-## Go Hot reloading
-
-Air is included for Go hot reloading. To use it, you just need to run the command `air` inside a Go project directory
-
-Air Doc : https://github.com/cosmtrek/air
 
 ## Useful commands & Shortcuts
 
@@ -79,3 +73,17 @@ Air Doc : https://github.com/cosmtrek/air
 - Start/Stop LSP : `:LspStart` / `:LspStop`
 - Toggle diagnostics : `:lua vim.diagnostic.enable(not vim.diagnostic.is_enabled())`
 - Toggle inlay hints : `:lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())`
+
+## Additional Neovim configuration
+To keep configuration to a minimum, LSP's and Treesitter parser are only added manually when needed.
+
+### LSP
+To configure a new LSP:
+- Get a basic config from https://github.com/neovim/nvim-lspconfig/tree/master/lsp
+- Add it the directory nvim/lsp
+- Install the LSP server manually inside the container
+- Configure the Neovim client in nvim/init.lua (checkout Clangd as an example in this repo)
+
+### Treesitter
+Parser can be found in this org : https://github.com/tree-sitter/tree-sitter-go/blob/master/Makefile
+Parsers will need to be compiled to a shared library and added to nvim/parser. Alternatively, they can be downloaded by hacking together a Neovim installation that has https://github.com/nvim-treesitter/nvim-treesitter installed, and copying the .so files from there. But that plugin should not be used as it's now archived.

@@ -1,12 +1,12 @@
 version: "3.8"
 services:
   dev-lab:
-    image: hakimr/dev-lab
+    image: hakrou/dev-lab
     command: tail -f /dev/null # Keep it alive !
     ports:
       - "7000-7005:7000-7005"
     volumes:
-      - /home/hakim/Projects:/Projects # Adjust this to your needs
+      - /home/hakim/Projects:/home/hakim/Projects # Adjust this to your needs
 
         #  mariadb:
         #    image: mariadb:latest
