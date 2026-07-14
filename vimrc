@@ -6,6 +6,11 @@
 "
 " Comment C(PP) files with // instead of /**/
 " echo "setlocal commentstring=//\ %s" > ~/.vim/after/ftplugin/c.vim
+"
+" Terraform Syntax Highlight
+" mkdir -p ~/.vim/syntax
+" wget https://raw.githubusercontent.com/hashivim/vim-terraform/refs/heads/master/syntax/terraform.vim -O ~/.vim/syntax/terraform.vim
+" wget https://raw.githubusercontent.com/hashivim/vim-terraform/refs/heads/master/syntax/hcl.vim -O ~/.vim/syntax/hcl.vim
 
 let mapleader=" "
 set nocompatible
@@ -13,7 +18,8 @@ set encoding=utf-8
 set fileencoding=utf-8
 set shell=/bin/bash
 
-colorscheme habamax
+" colorscheme habamax
+colorscheme wildcharm
 set background=dark " or light
 
 syntax on
@@ -63,7 +69,7 @@ nnoremap <leader>e :e **/*
 " nnoremap <leader>f :grep -r "" .<left><left><left>
 " nnoremap <leader>f :grep -r --exclude-dir=.git --exclude=*.moc.cpp --include=*{.cpp,.h} "" .<left><left><left>
 nnoremap <leader>f :grep -r "" .<left><left><left>
-nnoremap <Esc> :noh<CR>
+nnoremap <Esc> <CMD>noh<CR>
 nnoremap <leader>w :set wrap!<CR>
 
 nnoremap <leader>gp :GitGutterPrevHunk<CR>
@@ -71,7 +77,7 @@ nnoremap <leader>gn :GitGutterNextHunk<CR>
 
 set tabstop=4 " show existing tab with 4 spaces width
 set shiftwidth=4 " when indenting with '>', use 4 spaces width
-set cinoptions=l1 "Better indentation for C switch case
+set cinoptions=l1,j1 "Better indentation for C switch case & lambdas
 " On pressing tab, insert 4 spaces
 " set expandtab
 set autoindent

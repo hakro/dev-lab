@@ -5,7 +5,7 @@ local enable_autoclose = true
 local enable_gitsigns = true
 local enable_guessindent = true
 local enable_illuminate = true
-local enable_treesitter_context = false
+local enable_treesitter_context = false  -- :TSContext toggle/enable/disable to switch on/off
 local enable_lsp = false
 
 -- Keymaps
@@ -46,6 +46,7 @@ vim.o.expandtab = true
 vim.o.smartindent = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
+vim.o.cinoptions = "j1,l1" -- Better indentation for C++ switch-case & lambdas
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.cursorline = true
@@ -92,6 +93,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 })
 
 -- Plugin configs
+-- Update with `:lua vim.pack.update()` then `:w` to confirm the pending updates
 vim.pack.add({
     'https://github.com/m4xshen/autoclose.nvim',
     'https://github.com/lewis6991/gitsigns.nvim',
@@ -130,9 +132,6 @@ if enable_lsp then
     vim.keymap.set("n", "gl", vim.diagnostic.open_float) -- Instead of of <C-w>d
     -- Switch from/to .h and .cxx files (comes from plugin neovim/nvim-lspconfig)
     vim.keymap.set("n", "<C-h>", vim.cmd.LspClangdSwitchSourceHeader)
-    vim.keymap.set("i", "<C-Space>", function()
-        vim.lsp.completion.get()
-    end)
 
     vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next)
     vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev)

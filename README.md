@@ -65,6 +65,7 @@ docker exec -it XXX bash
 - Go to back to the previous cursor position : `ctrl+o`
 - Go to back to the next cursor position : `ctrl+i`
 
+- Jump to outter {} block: `[{`
 - Display Definition of CXX macro in normal mode : `[d` or `[D`
 - Jump to Definition of CXX macro in normal mode : `[ctrl+d` or `[ctrl+D`
 - Display Definition of CXX symbol in normal mode : `[i` or `[I` (see :h include)
